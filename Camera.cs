@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenTK;
 using Template.Objects;
 
@@ -38,14 +35,14 @@ namespace Template
             bottomLeft = Vector3.TransformPosition(bottomLeft, m);
         }
 
-        public IEnumerable<Ray> GenerateRays(int width, int height)
+        public IEnumerable<Tuple<int, int, Ray>> GenerateRays(int width, int height)
         {
             for (int u = 0; u < width; u++)
             {
                 for (int v = 0; v < height; v++)
                 {
                     Vector3 d = topLeft + (float)u / width * (topRight - topLeft) + (float)v / height * (bottomLeft - topLeft);
-                    yield return new Ray(Position, (d - Position).Normalized());
+                    yield return new Tuple<int, int, Ray>(u, v, new Ray(Position, (d - Position).Normalized()));
                 }
             }
         }

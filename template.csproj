@@ -47,11 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="HelperFunctions.cs" />
+    <Compile Include="Renderers\IRenderer.cs" />
     <Compile Include="Objects\Scene.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Objects\SceneObject.cs" />
+    <Compile Include="Objects\ISceneObject.cs" />
     <Compile Include="Objects\Ray.cs" />
     <Compile Include="Objects\Triangle.cs" />
+    <Compile Include="Renderers\WhittedRenderer.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

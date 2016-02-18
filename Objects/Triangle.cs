@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenTK;
+﻿using OpenTK;
 
 namespace Template.Objects
 {
@@ -20,7 +15,7 @@ namespace Template.Objects
             V3 = v3;
         }
 
-        public void Intersect(Ray r)
+        public bool Intersect(Ray r)
         {
             //Find vectors for two edges sharing V1
             var e1 = V2 - V1;
@@ -33,7 +28,7 @@ namespace Template.Objects
             var det = Vector3.Dot(e1, p);
 
             //NOT CULLING
-            if (det > -float.Epsilon && det < float.Epsilon) return;
+            if (det > -float.Epsilon && det < float.Epsilon) return false;
             var invDet = 1f / det;
 
             //calculate distance from V1 to ray origin
@@ -43,7 +38,7 @@ namespace Template.Objects
             var u = Vector3.Dot(T, p) * invDet;
 
             //The intersection lies outside of the triangle
-            if (u < 0f || u > 1f) return;
+            if (u < 0f || u > 1f) return false;
 
             //Prepare to test v parameter
             var Q = Vector3.Cross(T, e1);
@@ -52,14 +47,18 @@ namespace Template.Objects
             var v = Vector3.Dot(r.Direction, Q) * invDet;
 
             //The intersection lies outside of the triangle
-            if (v < 0f || u + v > 1f) return;
+            if (v < 0f || u + v > 1f) return false;
 
             var t = Vector3.Dot(e2, Q) * invDet;
 
-            if (t > float.Epsilon)
-            { //ray intersection
+            if (t <= float.Epsilon) return false; //ray intersection
+
+            if (t < r.NearestIntersection)
+            {
                 r.NearestIntersection = t;
+                r.IntersectedObject = this;
             }
+            return true;
         }
     }
 }

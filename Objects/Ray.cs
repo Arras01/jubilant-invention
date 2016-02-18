@@ -7,6 +7,7 @@ namespace Template.Objects
         public readonly Vector3 Origin;
         public readonly Vector3 Direction;
         public float NearestIntersection;
+        public ISceneObject IntersectedObject;
 
         public Ray(Vector3 origin, Vector3 direction)
         {
