@@ -4,7 +4,7 @@ namespace Template.Objects
 {
     public class Scene
     {
-        public readonly List<ISceneObject> Objects = new List<ISceneObject>();
+        public IEnumerable<ISceneObject> Objects = new List<ISceneObject>();
 
         public void BruteForceFindNearestIntersection(Ray r)
         {

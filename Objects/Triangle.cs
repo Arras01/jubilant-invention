@@ -2,7 +2,7 @@
 
 namespace Template.Objects
 {
-    class Triangle : ISceneObject
+    public class Triangle : ISceneObject
     {
         public readonly Vector3 V1;
         public readonly Vector3 V2;
