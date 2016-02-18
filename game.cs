@@ -17,14 +17,19 @@ namespace Template
         {
             Screen.Clear(0x2222ff);
         }
+        /// <summary>
+        /// Called once per frame at the start of rendering
+        /// </summary>
         public void Tick()
         {
-            //Screen.Print("hello world!", 2, 2, 0xffffff);
+            Screen.Print("hello world!", 2, 2, 0xffffff);
         }
+        /// <summary>
+        /// Called once per frame at the end of rendering?
+        /// "render stuff over the backbuffer (OpenGL, sprites)"
+        /// </summary>
         public void Render()
         {
-            Screen.Print("hello world!", 2, 2, 0xffffff);
-            // render stuff over the backbuffer (OpenGL, sprites)
         }
     }
 }

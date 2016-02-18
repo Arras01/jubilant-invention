@@ -69,10 +69,22 @@ namespace Template
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, pixels);
             return id;
         }
+        /// <summary>
+        /// Fills the screen with the specified color
+        /// </summary>
+        /// <param name="c"></param>
         public void Clear(int c)
         {
             for (int s = width * height, p = 0; p < s; p++) pixels[p] = c;
         }
+        /// <summary>
+        /// Draws an empty rectangle of the specified color
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
+        /// <param name="x2"></param>
+        /// <param name="y2"></param>
+        /// <param name="c"></param>
         public void Box(int x1, int y1, int x2, int y2, int c)
         {
             int dest = y1 * width;
@@ -89,6 +101,14 @@ namespace Template
                 pixels[dest2 + x] = c;
             }
         }
+        /// <summary>
+        /// Draws a filled rectangle of the specified color
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
+        /// <param name="x2"></param>
+        /// <param name="y2"></param>
+        /// <param name="c"></param>
         public void Bar(int x1, int y1, int x2, int y2, int c)
         {
             int dest = y1 * width;
@@ -97,6 +117,14 @@ namespace Template
                     pixels[dest + x] = c;
                 }
         }
+        /// <summary>
+        /// Draws a line of the specified color
+        /// </summary>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
+        /// <param name="x2"></param>
+        /// <param name="y2"></param>
+        /// <param name="c"></param>
         public void Line(int x1, int y1, int x2, int y2, int c)
         {
             if ((x1 < 0) || (y1 < 0) || (x2 < 0) || (y2 < 0) ||
@@ -126,6 +154,12 @@ namespace Template
                 }
             }
         }
+        /// <summary>
+        /// Draws one pixel of the specified color
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="c"></param>
         public void Plot(int x, int y, int c)
         {
             if ((x >= 0) && (y >= 0) && (x < width) && (y < height))
@@ -133,6 +167,13 @@ namespace Template
                 pixels[x + y * width] = c;
             }
         }
+        /// <summary>
+        /// Draws text of the specified color
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="c"></param>
         public void Print(string t, int x, int y, int c)
         {
             if (!fontReady)
