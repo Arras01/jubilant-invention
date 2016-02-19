@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using OpenTK;
 using Template.Objects;
 
 namespace Template
@@ -15,6 +17,8 @@ namespace Template
             Screen.Clear(0x2222ff);
             Renderer = new WhittedRenderer();
             Renderer.Scene = ObjLoader.LoadScene("C:\\Users\\Jasper\\Desktop\\Cubes.obj");
+            Renderer.Scene.PointLights = new List<PointLight>
+                { new PointLight(new Vector3(10, 10, 10), 3000f)};
             Camera = new Camera();
         }
         /// <summary>

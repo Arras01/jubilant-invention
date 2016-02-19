@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using OpenTK;
+﻿using OpenTK;
 
 namespace Template.Objects
 {
@@ -8,12 +7,14 @@ namespace Template.Objects
         public readonly Vector3 V1;
         public readonly Vector3 V2;
         public readonly Vector3 V3;
+        public readonly Vector3 Normal;
 
         public Triangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
             V1 = v1;
             V2 = v2;
             V3 = v3;
+            Normal = Vector3.Cross(v2 - v1, v3 - v1).Normalized();
         }
 
         public bool Intersect(Ray r)
@@ -54,10 +55,11 @@ namespace Template.Objects
 
             if (t <= float.Epsilon) return false; //ray intersection
 
-            if (t < r.NearestIntersection)
+            if (r.NearestIntersection == null || t < r.NearestIntersection.Value)
             {
                 r.NearestIntersection = t;
                 r.IntersectedObject = this;
+                r.IntersectionNormal = Normal;
             }
             return true;
         }

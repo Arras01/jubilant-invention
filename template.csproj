@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="HelperFunctions.cs" />
+    <Compile Include="Objects\PointLight.cs" />
     <Compile Include="ObjLoader.cs" />
     <Compile Include="Renderers\IRenderer.cs" />
     <Compile Include="Objects\Scene.cs" />
