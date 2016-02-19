@@ -19,7 +19,7 @@ namespace Template
         public Camera()
         {
             Position = new Vector3();
-            Direction = new Vector3(1, 0, 0);
+            Direction = new Vector3(0, 0, 1);
             Distance = 1;
             Vector3 center = Position + Direction * Distance;
             topLeft = center + new Vector3(-1, -1, 0);

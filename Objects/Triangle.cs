@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using System.Diagnostics;
+using OpenTK;
 
 namespace Template.Objects
 {

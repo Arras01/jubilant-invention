@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Template.Objects
 {
@@ -14,13 +15,9 @@ namespace Template.Objects
             }
         }
 
-        public void BruteForceFindAnyIntersection(Ray r)
+        public bool BruteForceFindAnyIntersection(Ray r)
         {
-            foreach (var sceneObject in Objects)
-            {
-                if (sceneObject.Intersect(r))
-                    break;
-            }
+            return Objects.Any(sceneObject => sceneObject.Intersect(r));
         }
     }
 }

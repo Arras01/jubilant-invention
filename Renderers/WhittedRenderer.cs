@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 using Template.Objects;
 
 namespace Template
@@ -7,7 +8,12 @@ namespace Template
     {
         public override Color Trace(Ray r)
         {
-            return Color.Aquamarine;
+            if (Scene.BruteForceFindAnyIntersection(r))
+                return Color.Red;
+            else
+            {
+                return Color.Green;
+            }
         }
     }
 }
