@@ -11,7 +11,7 @@ namespace Template
         {
             Scene.BruteForceFindNearestIntersection(r);
             if (r.NearestIntersection == null)
-                return Color.Black;
+                return Color.DeepSkyBlue;
             return HelperFunctions.MultiplyColor(Color.Red,
                 DirectIllumination(r.NearestIntersection.Value * r.Direction, r.IntersectionNormal));
         }
