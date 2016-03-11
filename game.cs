@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using OpenTK;
 using Template.Objects;
 
@@ -16,9 +15,15 @@ namespace Template
         {
             Screen.Clear(0x2222ff);
             Renderer = new WhittedRenderer();
+#if false
             Renderer.Scene = ObjLoader.LoadScene("C:\\Users\\Jasper\\Desktop\\sphere.obj");
+#else
+            Renderer.Scene = new Scene();
+            Renderer.Scene.Objects = new List<RenderableObject>()
+            { new Sphere(new Vector3(0, 0, -5), 2)};
+#endif
             Renderer.Scene.PointLights = new List<PointLight>
-                { new PointLight(new Vector3(10, 10, 10), 2500f)};
+                { new PointLight(new Vector3(0, -5, 0), 25f)};
             Camera = new Camera();
         }
         /// <summary>

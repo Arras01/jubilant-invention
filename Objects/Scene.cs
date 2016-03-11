@@ -6,7 +6,7 @@ namespace Template.Objects
 {
     public class Scene
     {
-        public IEnumerable<ISceneObject> Objects = new List<ISceneObject>();
+        public IEnumerable<RenderableObject> Objects = new List<RenderableObject>();
         public IEnumerable<PointLight> PointLights = new List<PointLight>(); 
 
         public void BruteForceFindNearestIntersection(Ray r)
@@ -24,13 +24,14 @@ namespace Template.Objects
 
         public bool BruteForceCheckFreePath(Vector3 a, Vector3 b)
         {
+            const float epsilon = 0.0001f;
             float distance = (b - a).Length;
             Vector3 direction = (b - a).Normalized();
-            Ray lightRay = new Ray(a + direction * 0.0001f, direction);
+            Ray lightRay = new Ray(a + direction * epsilon, direction);
             foreach (var sceneObject in Objects)
             {
                 sceneObject.Intersect(lightRay);
-                if (lightRay.NearestIntersection < distance)
+                if (lightRay.NearestIntersection < distance - 2 * epsilon)
                     return false;
             }
             return true;

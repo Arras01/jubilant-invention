@@ -2,7 +2,7 @@
 
 namespace Template.Objects
 {
-    class Material
+    public class Material
     {
         Vector3 Color;
         float specularity;

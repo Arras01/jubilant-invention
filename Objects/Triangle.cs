@@ -2,7 +2,7 @@
 
 namespace Template.Objects
 {
-    public class Triangle : ISceneObject
+    public class Triangle : RenderableObject
     {
         public readonly Vector3 V1;
         public readonly Vector3 V2;
@@ -17,7 +17,7 @@ namespace Template.Objects
             Normal = Vector3.Cross(v2 - v1, v3 - v1).Normalized();
         }
 
-        public bool Intersect(Ray r)
+        public override bool Intersect(Ray r)
         {
             //Find vectors for two edges sharing V1
             var e1 = V2 - V1;
@@ -55,10 +55,10 @@ namespace Template.Objects
 
             if (t <= float.Epsilon) return false; //ray intersection
 
-            if (r.NearestIntersection == null || t < r.NearestIntersection.Value)
+            if (t < r.NearestIntersection)
             {
                 r.NearestIntersection = t;
-                r.IntersectedObject = this;
+                r.IntersectedMaterial = Material;
                 r.IntersectionNormal = Normal;
             }
             return true;

@@ -52,15 +52,17 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="HelperFunctions.cs" />
-    <Compile Include="Material.cs" />
+    <Compile Include="Objects\Material.cs" />
     <Compile Include="Objects\PointLight.cs" />
+    <Compile Include="Objects\Sphere.cs" />
     <Compile Include="ObjLoader.cs" />
     <Compile Include="Renderers\IRenderer.cs" />
     <Compile Include="Objects\Scene.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Objects\ISceneObject.cs" />
+    <Compile Include="Objects\RenderableObject.cs" />
     <Compile Include="Objects\Ray.cs" />
     <Compile Include="Objects\Triangle.cs" />
+    <Compile Include="Renderers\TestRenderer.cs" />
     <Compile Include="Renderers\WhittedRenderer.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="Template.cs" />

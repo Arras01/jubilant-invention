@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using OpenTK;
 using Template.Objects;
 
@@ -10,10 +9,10 @@ namespace Template
         public override Vector3 Trace(Ray r)
         {
             Scene.BruteForceFindNearestIntersection(r);
-            if (r.NearestIntersection == null)
+            if (Math.Abs(r.NearestIntersection - float.MaxValue) < float.Epsilon)
                 return new Vector3(0, 0xBF, 0xFF);
             return new Vector3(255, 0, 0) *
-                DirectIllumination(r.NearestIntersection.Value * r.Direction, r.IntersectionNormal);
+                DirectIllumination(r.NearestIntersection * r.Direction, r.IntersectionNormal);
         }
 
         private float DirectIllumination(Vector3 intersection, Vector3 normal)
@@ -24,7 +23,7 @@ namespace Template
                 if (Scene.BruteForceCheckFreePath(intersection, pointLight.Location))
                     result += pointLight.Intensity
                               * (1 / (float)Math.Pow((intersection - pointLight.Location).Length, 2))
-                              * Math.Abs(Vector3.Dot(normal, (intersection - pointLight.Location).Normalized()));
+                              * Math.Max(Vector3.Dot(normal, (pointLight.Location - intersection).Normalized()), 0);
             }
             return result < 1 ? result : 1;
         }
