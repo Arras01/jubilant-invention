@@ -10,9 +10,20 @@ namespace Template
         {
             Scene.BruteForceFindNearestIntersection(r);
             if (Math.Abs(r.NearestIntersection - float.MaxValue) < float.Epsilon)
-                return new Vector3(0, 0xBF, 0xFF);
-            return r.IntersectedMaterial.Color *
-                DirectIllumination(r.NearestIntersection * r.Direction, r.IntersectionNormal);
+                return new Vector3(0, 0.8f, 1f);
+            //if (r.IntersectedMaterial.Specularity < 0.1f)
+                return r.IntersectedMaterial.Color *
+                    DirectIllumination(r.NearestIntersection * r.Direction, r.IntersectionNormal);
+            //else
+            {
+                return r.IntersectedMaterial.Color * Trace(ReflectRay(r, r.IntersectionNormal));
+            }
+        }
+
+        private Ray ReflectRay(Ray r, Vector3 normal)
+        {
+            Vector3 newDirection = r.Direction - 2 * Vector3.Dot(r.Direction, normal) * normal;
+            return new Ray(r.Origin + r.Direction * r.NearestIntersection + newDirection * 0.0001f, newDirection);
         }
 
         private float DirectIllumination(Vector3 intersection, Vector3 normal)

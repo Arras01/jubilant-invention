@@ -11,9 +11,15 @@ namespace Template.Objects
 
         public bool IsLight => Light > 0;
 
-        public static Material TestDiffuseMaterial => new Material()
+        public static Material TestDiffuseMaterial => new Material
         {
-            Color = new Vector3(255, 20, 30)
+            Color = new Vector3(1f, 0f, 0f)
+        };
+
+        public static Material TestSpecularMaterial => new Material
+        {
+            Color = Vector3.One,
+            Specularity = 1
         };
     }
 }
