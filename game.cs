@@ -21,13 +21,13 @@ namespace Template
             Renderer.Scene = new Scene();
             Renderer.Scene.Objects = new List<RenderableObject>()
             {
-                new Sphere(new Vector3(0, 0, -5), 2, Material.TestDiffuseMaterial),
-                new Sphere(new Vector3(5, 0, -7), 2, Material.TestSpecularMaterial),
-                new Plane(-5, new Vector3(0, -1, 0), Material.TestDiffuseMaterial)
+                new Sphere(new Vector3(0, 0, -25), 2, Material.TestDiffuseMaterial),
+                new Sphere(new Vector3(5, 0, -7), 2, Material.TestDiffuseMaterial),
+                new CheckboardPlane(-5, new Vector3(0, -1, 0), Material.TestSpecularMaterial)
             };
 #endif
             Renderer.Scene.PointLights = new List<PointLight>
-                { new PointLight(new Vector3(0, -5, 0), 25f)};
+                { new PointLight(new Vector3(0, -5, 0), 250f)};
             Camera = new Camera();
         }
         /// <summary>
@@ -38,7 +38,7 @@ namespace Template
             //Screen.Print("hello world!", 2, 2, 0xffffff);
             foreach (var tuple in Camera.GenerateRays(Screen.width, Screen.height))
             {
-                var c = Renderer.Trace(tuple.Item3);
+                var c = Renderer.Trace(tuple.Item3, 1);
                 Screen.Plot(tuple.Item1, tuple.Item2, HelperFunctions.VectorColorToInt(c));
                 
             }

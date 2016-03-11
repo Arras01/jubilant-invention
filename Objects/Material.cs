@@ -19,7 +19,18 @@ namespace Template.Objects
         public static Material TestSpecularMaterial => new Material
         {
             Color = Vector3.One,
-            Specularity = 1
+            Specularity = 0.5f
+        };
+
+        public static Material TestWhiteMaterial => new Material
+        {
+            Color = Vector3.One,
+            Specularity = 0.1f
+        };
+
+        public static Material TestBlackMaterial => new Material
+        {
+            Specularity = 0.1f
         };
     }
 }

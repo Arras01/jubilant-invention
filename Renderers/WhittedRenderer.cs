@@ -6,18 +6,26 @@ namespace Template
 {
     class WhittedRenderer : Renderer
     {
-        public override Vector3 Trace(Ray r)
+        public override Vector3 Trace(Ray r, int depth)
         {
+            if (depth > 20)
+                return new Vector3();
+
             Scene.BruteForceFindNearestIntersection(r);
             if (Math.Abs(r.NearestIntersection - float.MaxValue) < float.Epsilon)
                 return new Vector3(0, 0.8f, 1f);
-            //if (r.IntersectedMaterial.Specularity < 0.1f)
+
+            if (r.IntersectedMaterial.Specularity < 0.02f)
                 return r.IntersectedMaterial.Color *
                     DirectIllumination(r.NearestIntersection * r.Direction, r.IntersectionNormal);
-            //else
+
+            if (r.IntersectedMaterial.Specularity > 0.98f)
             {
-                return r.IntersectedMaterial.Color * Trace(ReflectRay(r, r.IntersectionNormal));
+                return r.IntersectedMaterial.Color * Trace(ReflectRay(r, r.IntersectionNormal), ++depth);
             }
+            return r.IntersectedMaterial.Color
+                   * DirectIllumination(r.NearestIntersection * r.Direction, r.IntersectionNormal) * (1 - r.IntersectedMaterial.Specularity)
+                   + Trace(ReflectRay(r, r.IntersectionNormal), ++depth) * r.IntersectedMaterial.Specularity;
         }
 
         private Ray ReflectRay(Ray r, Vector3 normal)

@@ -27,6 +27,5 @@ namespace Template.Objects
 
             return false;
         }
-
     }
 }
