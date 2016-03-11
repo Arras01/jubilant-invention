@@ -53,6 +53,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="HelperFunctions.cs" />
     <Compile Include="Objects\Material.cs" />
+    <Compile Include="Objects\Plane.cs" />
     <Compile Include="Objects\PointLight.cs" />
     <Compile Include="Objects\Sphere.cs" />
     <Compile Include="ObjLoader.cs" />

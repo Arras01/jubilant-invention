@@ -22,7 +22,8 @@ namespace Template
             Renderer.Scene.Objects = new List<RenderableObject>()
             {
                 new Sphere(new Vector3(0, 0, -5), 2, Material.TestDiffuseMaterial),
-                new Sphere(new Vector3(5, 0, -7), 2, Material.TestSpecularMaterial)
+                new Sphere(new Vector3(5, 0, -7), 2, Material.TestSpecularMaterial),
+                new Plane(-5, new Vector3(0, -1, 0), Material.TestDiffuseMaterial)
             };
 #endif
             Renderer.Scene.PointLights = new List<PointLight>
