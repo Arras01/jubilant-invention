@@ -7,7 +7,7 @@ namespace Template.Objects
         public Vector3 Color;
         public float Specularity;
         public float Light;
-        public float Refraction;
+        public float RefractiveIndex;
 
         public bool IsLight => Light > 0;
 

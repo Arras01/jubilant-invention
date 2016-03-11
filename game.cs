@@ -23,7 +23,7 @@ namespace Template
             {
                 new Sphere(new Vector3(0, 0, -25), 2, Material.TestDiffuseMaterial),
                 new Sphere(new Vector3(5, 0, -7), 2, Material.TestDiffuseMaterial),
-                new CheckboardPlane(-5, new Vector3(0, -1, 0), Material.TestSpecularMaterial)
+               // new CheckboardPlane(-5, new Vector3(0, -1, 0), Material.TestSpecularMaterial)
             };
 #endif
             Renderer.Scene.PointLights = new List<PointLight>

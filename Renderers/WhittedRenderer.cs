@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenTK;
+using OpenTK.Graphics.ES11;
 using Template.Objects;
 
 namespace Template
@@ -15,17 +16,27 @@ namespace Template
             if (Math.Abs(r.NearestIntersection - float.MaxValue) < float.Epsilon)
                 return new Vector3(0, 0.8f, 1f);
 
-            if (r.IntersectedMaterial.Specularity < 0.02f)
-                return r.IntersectedMaterial.Color *
-                    DirectIllumination(r.NearestIntersection * r.Direction, r.IntersectionNormal);
-
-            if (r.IntersectedMaterial.Specularity > 0.98f)
+            //if (r.IntersectedMaterial.RefractiveIndex < 0.0001f)
             {
-                return r.IntersectedMaterial.Color * Trace(ReflectRay(r, r.IntersectionNormal), ++depth);
+                if (r.IntersectedMaterial.Specularity < 0.02f)
+                    return r.IntersectedMaterial.Color *
+                              DirectIllumination(r.NearestIntersection * r.Direction, r.IntersectionNormal);
+
+                else if (r.IntersectedMaterial.Specularity > 0.98f)
+                {
+                    return r.IntersectedMaterial.Color * Trace(ReflectRay(r, r.IntersectionNormal), ++depth);
+                }
+                else
+                    return r.IntersectedMaterial.Color
+                              * DirectIllumination(r.NearestIntersection * r.Direction, r.IntersectionNormal) *
+                              (1 - r.IntersectedMaterial.Specularity)
+                              + Trace(ReflectRay(r, r.IntersectionNormal), ++depth) * r.IntersectedMaterial.Specularity;
             }
-            return r.IntersectedMaterial.Color
-                   * DirectIllumination(r.NearestIntersection * r.Direction, r.IntersectionNormal) * (1 - r.IntersectedMaterial.Specularity)
-                   + Trace(ReflectRay(r, r.IntersectionNormal), ++depth) * r.IntersectedMaterial.Specularity;
+            /*else
+            {
+                var n1n2 = 1 / 
+                var k = 1 - 
+            }*/
         }
 
         private Ray ReflectRay(Ray r, Vector3 normal)
