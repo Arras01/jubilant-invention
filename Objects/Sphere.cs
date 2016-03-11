@@ -9,11 +9,12 @@ namespace Template.Objects
         public float Radius;
         public readonly float Radius2;
 
-        public Sphere(Vector3 position, float radius)
+        public Sphere(Vector3 position, float radius, Material material)
         {
             Position = position;
             Radius = radius;
             Radius2 = (float)Math.Pow(radius, 2);
+            Material = material;
         }
 
         public override bool Intersect(Ray r)

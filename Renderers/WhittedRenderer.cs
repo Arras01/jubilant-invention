@@ -11,7 +11,7 @@ namespace Template
             Scene.BruteForceFindNearestIntersection(r);
             if (Math.Abs(r.NearestIntersection - float.MaxValue) < float.Epsilon)
                 return new Vector3(0, 0xBF, 0xFF);
-            return new Vector3(255, 0, 0) *
+            return r.IntersectedMaterial.Color *
                 DirectIllumination(r.NearestIntersection * r.Direction, r.IntersectionNormal);
         }
 
