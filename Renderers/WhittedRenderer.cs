@@ -7,13 +7,13 @@ namespace Template
 {
     class WhittedRenderer : Renderer
     {
-        public override Color Trace(Ray r)
+        public override Vector3 Trace(Ray r)
         {
             Scene.BruteForceFindNearestIntersection(r);
             if (r.NearestIntersection == null)
-                return Color.DeepSkyBlue;
-            return HelperFunctions.MultiplyColor(Color.Red,
-                DirectIllumination(r.NearestIntersection.Value * r.Direction, r.IntersectionNormal));
+                return new Vector3(0, 0xBF, 0xFF);
+            return new Vector3(255, 0, 0) *
+                DirectIllumination(r.NearestIntersection.Value * r.Direction, r.IntersectionNormal);
         }
 
         private float DirectIllumination(Vector3 intersection, Vector3 normal)

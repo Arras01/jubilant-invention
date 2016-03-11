@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using OpenTK;
 using Template.Objects;
 
 namespace Template
@@ -7,6 +8,6 @@ namespace Template
     {
         public Scene Scene;
 
-        public abstract Color Trace(Ray r);
+        public abstract Vector3 Trace(Ray r);
     }
 }

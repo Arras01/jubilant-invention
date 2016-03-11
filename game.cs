@@ -30,7 +30,7 @@ namespace Template
             foreach (var tuple in Camera.GenerateRays(Screen.width, Screen.height))
             {
                 var c = Renderer.Trace(tuple.Item3);
-                Screen.Plot(tuple.Item1, tuple.Item2, HelperFunctions.ColorToInt(c));
+                Screen.Plot(tuple.Item1, tuple.Item2, HelperFunctions.VectorColorToInt(c));
                 
             }
             Debug.WriteLine("render done");
