@@ -41,10 +41,15 @@ namespace Template
             {
                 for (int v = 0; v < height; v++)
                 {
-                    Vector3 d = topLeft + (float)u / width * (topRight - topLeft) + (float)v / height * (bottomLeft - topLeft);
-                    yield return new Tuple<int, int, Ray>(u, v, new Ray(Position, (d - Position).Normalized()));
+                    yield return GenerateRay(u, v, width, height);
                 }
             }
+        }
+
+        public Tuple<int, int, Ray> GenerateRay(int u, int v, int width, int height)
+        {
+            Vector3 d = topLeft + (float)u / width * (topRight - topLeft) + (float)v / height * (bottomLeft - topLeft);
+            return new Tuple<int, int, Ray>(u, v, new Ray(Position, (d - Position).Normalized()));
         }
     }
 }

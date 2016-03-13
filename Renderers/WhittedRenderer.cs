@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
 using OpenTK;
-using OpenTK.Graphics.ES11;
 using Template.Objects;
 
 namespace Template
@@ -9,14 +9,14 @@ namespace Template
     {
         public override Vector3 Trace(Ray r, int depth)
         {
-            if (depth > 20)
-                return new Vector3();
+            if (depth > 15)
+                return new Vector3(0, 0, 0);
 
             Scene.BruteForceFindNearestIntersection(r);
             if (Math.Abs(r.NearestIntersection - float.MaxValue) < float.Epsilon)
                 return new Vector3(0, 0.8f, 1f);
 
-            //if (r.IntersectedMaterial.RefractiveIndex < 0.0001f)
+            if (r.IntersectedMaterial.RefractiveIndex < 0.0001f)
             {
                 if (r.IntersectedMaterial.Specularity < 0.02f)
                     return r.IntersectedMaterial.Color *
@@ -32,11 +32,59 @@ namespace Template
                               (1 - r.IntersectedMaterial.Specularity)
                               + Trace(ReflectRay(r, r.IntersectionNormal), ++depth) * r.IntersectedMaterial.Specularity;
             }
-            /*else
+            else
             {
-                var n1n2 = 1 / 
-                var k = 1 - 
-            }*/
+                var n1n2 = r.OriginRefractiveIndex / r.IntersectedMaterial.RefractiveIndex;
+                var cos1 = Vector3.Dot(r.IntersectionNormal, -r.Direction);
+                bool exiting = false;
+                if (cos1 < 0)
+                {
+                    exiting = true;
+                    r.IntersectionNormal *= -1;
+                }
+                cos1 = Math.Abs(cos1);
+
+                var k = 1 - Math.Pow(n1n2, 2) * (1 - Math.Pow(cos1, 2));
+
+                if (k < 0)
+                {
+                    return r.IntersectedMaterial.Color * Trace(ReflectRay(r, r.IntersectionNormal), ++depth);
+                }
+                else
+                {
+                    var n2 = r.IntersectedMaterial.RefractiveIndex;
+                    if (exiting)
+                        n2 = 1;
+
+                    var r0 =
+                        Math.Pow(
+                            (r.OriginRefractiveIndex - n2) /
+                            (r.OriginRefractiveIndex + n2), 2);
+                    var fr = r0 + (1 - r0) * Math.Pow(1 - cos1, 5);
+
+                    var newDirection = n1n2 * r.Direction - r.IntersectionNormal * (float)(n1n2 * cos1 - Math.Sqrt(k));
+                    newDirection.Normalize();
+                    Ray t = new Ray(r.Origin + r.Direction * r.NearestIntersection + newDirection * 0.0001f
+                        , newDirection);
+
+                    if (!exiting)
+                        t.OriginRefractiveIndex = r.IntersectedMaterial.RefractiveIndex;
+
+                    Vector3 transmittedColor = r.IntersectedMaterial.Color * Trace(t, ++depth) * (float)(1 - fr);
+                    if (r.IntersectedMaterial != null)
+                    {
+                        transmittedColor.X *=
+                            (float) Math.Exp(-r.IntersectedMaterial.Absorption.X*r.NearestIntersection);
+                        transmittedColor.Y *=
+                            (float) Math.Exp(-r.IntersectedMaterial.Absorption.Y*r.NearestIntersection);
+                        transmittedColor.Z *=
+                            (float) Math.Exp(-r.IntersectedMaterial.Absorption.Z*r.NearestIntersection);
+                    }
+
+                    return transmittedColor
+                         + r.IntersectedMaterial.Color * Trace(ReflectRay(r, r.IntersectionNormal), ++depth) * (float)fr;
+                }
+            }
         }
 
         private Ray ReflectRay(Ray r, Vector3 normal)

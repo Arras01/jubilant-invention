@@ -8,6 +8,7 @@ namespace Template.Objects
         public float Specularity;
         public float Light;
         public float RefractiveIndex;
+        public Vector3 Absorption;
 
         public bool IsLight => Light > 0;
 
@@ -19,7 +20,14 @@ namespace Template.Objects
         public static Material TestSpecularMaterial => new Material
         {
             Color = Vector3.One,
-            Specularity = 0.5f
+            Specularity = 1f
+        };
+
+        public static Material TestRefractiveMaterial => new Material
+        {
+            Color = new Vector3(1, 1, 1),
+            RefractiveIndex = 1.5f,
+            Absorption = new Vector3(0.1f)
         };
 
         public static Material TestWhiteMaterial => new Material

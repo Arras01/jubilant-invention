@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 
 namespace Template
 {
@@ -11,6 +13,8 @@ namespace Template
         static Game game;
         protected override void OnLoad(EventArgs e)
         {
+            MouseDown += ClickPixel;
+
             // called upon app init
             GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.Texture2D);
@@ -77,6 +81,12 @@ namespace Template
             {
                 app.Run(30.0, 0.0);
             }
+        }
+
+
+        private void ClickPixel(object sender, MouseButtonEventArgs e)
+        {
+            game.CheckPixel(e.X, e.Y);
         }
     }
 }

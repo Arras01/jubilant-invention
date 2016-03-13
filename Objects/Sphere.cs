@@ -45,7 +45,14 @@ namespace Template.Objects
             if (d < 0)
                 return false;
 
-            float t = (float)Math.Min((-b + Math.Sqrt(d)) / 2 * a, (-b - Math.Sqrt(d)) / 2 * a);
+            float t = (float)((-b + Math.Sqrt(d)) / 2 * a);
+            var t2 = (float)((-b - Math.Sqrt(d)) / 2 * a);
+
+            if (t < 0.0001f)
+                t = t2;
+            else if (t2 > 0.0001f)
+                t = Math.Min(t, t2);
+
             if (t < r.NearestIntersection && t > 0.0001f)
             {
                 r.IntersectedMaterial = Material;

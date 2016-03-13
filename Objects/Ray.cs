@@ -9,6 +9,7 @@ namespace Template.Objects
         public float NearestIntersection = float.MaxValue;
         public Vector3 IntersectionNormal;
         public Material IntersectedMaterial;
+        public float OriginRefractiveIndex = 1;
 
         public Ray(Vector3 origin, Vector3 direction)
         {
