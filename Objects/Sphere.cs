@@ -16,9 +16,12 @@ namespace Template.Objects
             Radius2 = (float)Math.Pow(radius, 2);
             Material = material;
         }
-#if false
+
         public override bool Intersect(Ray r)
         {
+            //only use faster algorithm if ray starts outside the sphere since it doesn't work correctly otherwise
+            if ((r.Origin - Position).Length < Radius)
+                return SlowIntersect(r);
             Vector3 c = Position - r.Origin;
             float t = Vector3.Dot(c, r.Direction);
             Vector3 q = c - t * r.Direction;
@@ -35,8 +38,8 @@ namespace Template.Objects
             }
             return false;
         }
-#else
-        public override bool Intersect(Ray r)
+
+        private bool SlowIntersect(Ray r)
         {
             var a = Vector3.Dot(r.Direction, r.Direction);
             var b = 2 * Vector3.Dot(r.Direction, r.Origin - Position);
@@ -62,6 +65,5 @@ namespace Template.Objects
             }
             return false;
         }
-#endif
     }
 }

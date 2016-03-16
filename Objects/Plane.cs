@@ -16,7 +16,12 @@ namespace Template.Objects
 
         public override bool Intersect(Ray r)
         {
-            float t = -Vector3.Dot(r.Origin, Normal) + Distance / Vector3.Dot(r.Direction, Normal);
+            float denom = Vector3.Dot(r.Direction, Normal);
+            if (denom < 0.0001f) return false;
+
+            Vector3 placeDifference = Point - r.Origin;
+
+            float t = Vector3.Dot(placeDifference, Normal) / denom;
             if (t < r.NearestIntersection && t > 0.0001f)
             {
                 r.IntersectedMaterial = Material;
@@ -27,5 +32,7 @@ namespace Template.Objects
 
             return false;
         }
+
+        public Vector3 Point => Normal * Distance;
     }
 }

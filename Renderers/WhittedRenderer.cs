@@ -9,7 +9,7 @@ namespace Template
     {
         public override Vector3 Trace(Ray r, int depth)
         {
-            if (depth > 15)
+            if (depth > 5)
                 return new Vector3(0, 0, 0);
 
             Scene.BruteForceFindNearestIntersection(r);
@@ -28,7 +28,7 @@ namespace Template
                 }
                 else
                     return r.IntersectedMaterial.Color
-                              * DirectIllumination(r.NearestIntersection * r.Direction, r.IntersectionNormal) *
+                              * DirectIllumination(r.NearestIntersection * r.Direction + r.Origin, r.IntersectionNormal) *
                               (1 - r.IntersectedMaterial.Specularity)
                               + Trace(ReflectRay(r, r.IntersectionNormal), ++depth) * r.IntersectedMaterial.Specularity;
             }
@@ -37,7 +37,7 @@ namespace Template
                 var n1n2 = r.OriginRefractiveIndex / r.IntersectedMaterial.RefractiveIndex;
                 var cos1 = Vector3.Dot(r.IntersectionNormal, -r.Direction);
                 bool exiting = false;
-                if (cos1 < 0)
+                if (cos1 < 0) //make sure collision with backface of things works properly
                 {
                     exiting = true;
                     r.IntersectionNormal *= -1;
@@ -55,7 +55,7 @@ namespace Template
                     var n2 = r.IntersectedMaterial.RefractiveIndex;
                     if (exiting)
                         n2 = 1;
-
+                    //Something still seems wrong about the reflection, but I'm pretty sure the formulas are correct
                     var r0 =
                         Math.Pow(
                             (r.OriginRefractiveIndex - n2) /
@@ -89,6 +89,9 @@ namespace Template
 
         private Ray ReflectRay(Ray r, Vector3 normal)
         {
+            var angle = Vector3.Dot(r.Direction, normal);
+            if (angle < 0)
+                normal *= -1;
             Vector3 newDirection = r.Direction - 2 * Vector3.Dot(r.Direction, normal) * normal;
             return new Ray(r.Origin + r.Direction * r.NearestIntersection + newDirection * 0.0001f, newDirection);
         }
@@ -99,9 +102,14 @@ namespace Template
             foreach (var pointLight in Scene.PointLights)
             {
                 if (Scene.BruteForceCheckFreePath(intersection, pointLight.Location))
+                {
+                    var angle = Vector3.Dot(normal, (pointLight.Location - intersection).Normalized());
+                    if (angle < 0)
+                        angle *= -1;
                     result += pointLight.Intensity
-                              * (1 / (float)Math.Pow((intersection - pointLight.Location).Length, 2))
-                              * Math.Max(Vector3.Dot(normal, (pointLight.Location - intersection).Normalized()), 0);
+                              *(1/(float) Math.Pow((intersection - pointLight.Location).Length, 2))
+                              *Math.Max(angle, 0);
+                }
             }
             return result < 1 ? result : 1;
         }

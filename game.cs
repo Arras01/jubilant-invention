@@ -22,12 +22,13 @@ namespace Template
             Renderer.Scene = new Scene();
             Renderer.Scene.Objects = new List<RenderableObject>()
             {
-                new Sphere(new Vector3(0, 0, -10), 5, Material.TestRefractiveMaterial),
-                //new Sphere(new Vector3(-5, 3, -20), 2, Material.TestDiffuseMaterial),
-                //new Sphere(new Vector3(5, 3, -11), 2, Material.TestDiffuseMaterial),
-                //new Sphere(new Vector3(2, 2, -14), 2, Material.TestSpecularMaterial),
-                //new Sphere(new Vector3(-3, 3, -10), 1f, Material.TestRefractiveMaterial),
-                new CheckboardPlane(-5, new Vector3(0, -1, 0), Material.TestSpecularMaterial)
+                new Sphere(new Vector3(0, -4, -10), 5, Material.TestRefractiveMaterial),
+                new Sphere(new Vector3(-5, 3, -20), 2, Material.TestDiffuseMaterial),
+                new Sphere(new Vector3(5, 3, -11), 2, Material.TestDiffuseMaterial),
+                new Sphere(new Vector3(2, 2, -14), 2, Material.TestSpecularMaterial),
+                new Sphere(new Vector3(-3, 3, -10), 1f, Material.TestRefractiveMaterial),
+                new CheckboardPlane(5, new Vector3(0, 1, 0), Material.TestWhiteMaterial),
+                //new Sphere(new Vector3(0,0,0), 50, Material.TestWhiteMaterial)
             };
 #endif
             Renderer.Scene.PointLights = new List<PointLight>

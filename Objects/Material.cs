@@ -26,7 +26,7 @@ namespace Template.Objects
         public static Material TestRefractiveMaterial => new Material
         {
             Color = new Vector3(1, 1, 1),
-            RefractiveIndex = 1.5f,
+            RefractiveIndex = 1.2f,
             Absorption = new Vector3(0.1f)
         };
 
