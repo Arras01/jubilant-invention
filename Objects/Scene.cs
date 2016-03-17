@@ -7,6 +7,7 @@ namespace Template.Objects
     public class Scene
     {
         public IEnumerable<RenderableObject> Objects = new List<RenderableObject>();
+        public List<Triangle> Triangles = new List<Triangle>(); 
         public IEnumerable<PointLight> PointLights = new List<PointLight>(); 
 
         public void BruteForceFindNearestIntersection(Ray r)
@@ -15,6 +16,11 @@ namespace Template.Objects
             {
                 sceneObject.Intersect(r);
             }
+        }
+
+        public void BvhFindNearestIntersection(Ray r)
+        {
+            
         }
 
         public bool BruteForceFindAnyIntersection(Ray r)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using OpenTK;
 using Template.Objects;
@@ -10,14 +11,17 @@ namespace Template
         public Surface Screen;
         public Renderer Renderer;
         public Camera Camera;
+        public BVH Bvh;
 
         public void Init()
         {
 
             Screen.Clear(0x2222ff);
             Renderer = new WhittedRenderer();
-#if false
+#if true
             Renderer.Scene = ObjLoader.LoadScene("C:\\Users\\Jasper\\Desktop\\sphere.obj");
+            Bvh = new BVH();
+            Bvh.ConstructBVH(Renderer.Scene.Triangles);
 #else
             Renderer.Scene = new Scene();
             Renderer.Scene.Objects = new List<RenderableObject>()
@@ -50,7 +54,7 @@ namespace Template
                 Screen.Plot(tuple.Item1, tuple.Item2, HelperFunctions.VectorColorToInt(c));
 
             }
-            Debug.WriteLine("frame");
+            Console.WriteLine("frame");
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using FileFormatWavefront;
 using FileFormatWavefront.Model;
 using OpenTK;
 using Template.Objects;
+using Material = Template.Objects.Material;
 using Scene = Template.Objects.Scene;
 
 namespace Template
@@ -15,7 +16,8 @@ namespace Template
             Scene s = new Scene();
             var result = FileFormatObj.Load(objName, false);
             var allFaces = result.Model.Groups.SelectMany(g => g.Faces).Concat(result.Model.UngroupedFaces);
-            s.Objects = new List<RenderableObject>(allFaces.Select(f => ConvertFaceToTriangle(f, result.Model.Vertices)));
+            s.Triangles = new List<Triangle>(allFaces.Select(f => ConvertFaceToTriangle(f, result.Model.Vertices)));
+            s.Objects = new List<RenderableObject>(s.Triangles);
             return s;
         }
 
@@ -23,7 +25,10 @@ namespace Template
         {
             return new Triangle(ConvertVertexToVector3(vertices[f.Indices[0].vertex]),
                                       ConvertVertexToVector3(vertices[f.Indices[1].vertex]),
-                                      ConvertVertexToVector3(vertices[f.Indices[2].vertex]));
+                                      ConvertVertexToVector3(vertices[f.Indices[2].vertex]))
+            {
+                Material = Material.TestDiffuseMaterial
+            };
         }
 
         private static Vector3 ConvertVertexToVector3(Vertex v)

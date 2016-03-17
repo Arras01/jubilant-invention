@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BVH things\AABB.cs" />
+    <Compile Include="BVH things\BVH.cs" />
+    <Compile Include="BVH things\BVHNode.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="HelperFunctions.cs" />
     <Compile Include="Objects\CheckboardPlane.cs" />
