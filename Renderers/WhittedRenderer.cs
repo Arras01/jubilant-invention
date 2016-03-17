@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using OpenTK;
 using Template.Objects;
 
@@ -12,7 +11,8 @@ namespace Template
             if (depth > 5)
                 return new Vector3(0, 0, 0);
 
-            Scene.BruteForceFindNearestIntersection(r);
+            Scene.BvhFindNearestIntersection(r);
+
             if (Math.Abs(r.NearestIntersection - float.MaxValue) < float.Epsilon)
                 return new Vector3(0, 0.8f, 1f);
 
@@ -36,7 +36,7 @@ namespace Template
             {
                 var n1n2 = r.OriginRefractiveIndex / r.IntersectedMaterial.RefractiveIndex;
                 var cos1 = Vector3.Dot(r.IntersectionNormal, -r.Direction);
-                bool exiting = false;
+                bool exiting = false; //TODO: All of this normal flipping stuff should probably go in Intersect
                 if (cos1 < 0) //make sure collision with backface of things works properly
                 {
                     exiting = true;

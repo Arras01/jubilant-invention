@@ -11,7 +11,6 @@ namespace Template
         public Surface Screen;
         public Renderer Renderer;
         public Camera Camera;
-        public BVH Bvh;
 
         public void Init()
         {
@@ -20,8 +19,7 @@ namespace Template
             Renderer = new WhittedRenderer();
 #if true
             Renderer.Scene = ObjLoader.LoadScene("C:\\Users\\Jasper\\Desktop\\sphere.obj");
-            Bvh = new BVH();
-            Bvh.ConstructBVH(Renderer.Scene.Triangles);
+            Renderer.Scene.Bvh.ConstructBVH(Renderer.Scene.Triangles);
 #else
             Renderer.Scene = new Scene();
             Renderer.Scene.Objects = new List<RenderableObject>()

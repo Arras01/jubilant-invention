@@ -4,7 +4,7 @@ using Template.Objects;
 
 namespace Template
 {
-    class AABB
+    public class AABB
     {
         public readonly Vector3[] Bounds = new Vector3[2];
         public Vector3 Centroid;

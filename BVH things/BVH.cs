@@ -8,22 +8,22 @@ using Template.Objects;
 
 namespace Template
 {
-    class BVH
+    public class BVH
     {
-        public BVHNode root;
+        public BVHNode Root;
         private BVHNode[] pool;
         private int poolPtr;
-        private uint[] indices;
+        public uint[] Indices;
         private List<AABB> AABBs;
 
         public void ConstructBVH(List<Triangle> primitives)
         {
             AABBs = GetBoundingBoxes(primitives);
 
-            indices = new uint[primitives.Count];
+            Indices = new uint[primitives.Count];
             for (uint i = 0; i < primitives.Count; i++)
             {
-                indices[i] = i;
+                Indices[i] = i;
             }
 
             pool = new BVHNode[2 * primitives.Count - 1];
@@ -32,14 +32,14 @@ namespace Template
                 pool[i] = new BVHNode();
             }
 
-            root = pool[0];
+            Root = pool[0];
             poolPtr = 2;
 
-            root.first = 0;
-            root.count = primitives.Count;
-            root.vertexBounds = CalculateVertexBounds(root.first, root.count);
-            root.centroidBounds = CalculateCentroidBounds(root.first, root.count);
-            Subdivide(root);
+            Root.first = 0;
+            Root.count = primitives.Count;
+            Root.vertexBounds = CalculateVertexBounds(Root.first, Root.count);
+            Root.centroidBounds = CalculateCentroidBounds(Root.first, Root.count);
+            Subdivide(Root);
         }
 
         List<AABB> GetBoundingBoxes(List<Triangle> primitives)
@@ -62,7 +62,7 @@ namespace Template
 
             for (int i = 0; i < count; i++)
             {
-                var prim = AABBs[(int)indices[first + i]];
+                var prim = AABBs[(int)Indices[first + i]];
                 xmin = Math.Min(xmin, prim.Centroid.X);
                 ymin = Math.Min(ymin, prim.Centroid.Y);
                 zmin = Math.Min(zmin, prim.Centroid.Z);
@@ -87,7 +87,7 @@ namespace Template
 
             for (int i = 0; i < count; i++)
             {
-                var prim = AABBs[(int)indices[first + i]];
+                var prim = AABBs[(int)Indices[first + i]];
                 int binID = 0;
                 switch (axis)
                 {
@@ -154,7 +154,7 @@ namespace Template
 
             for (int i = 0; i < count; i++)
             {
-                var prim = AABBs[(int)indices[first + i]];
+                var prim = AABBs[(int)Indices[first + i]];
                 xmin = Math.Min(xmin, prim.Bounds[0].X);
                 ymin = Math.Min(ymin, prim.Bounds[0].Y);
                 zmin = Math.Min(zmin, prim.Bounds[0].Z);
@@ -201,7 +201,7 @@ namespace Template
             b.isLeaf = false;
         }
 
-        public void FindSplit(BVHNode b)
+        void FindSplit(BVHNode b)
         {
             int bins = 8;
 
@@ -280,33 +280,33 @@ namespace Template
                 switch (axis)
                 {
                     case Axis.X:
-                        while (AABBs[(int)indices[left]].Centroid.X < splitPos)
+                        while (AABBs[(int)Indices[left]].Centroid.X < splitPos)
                             left++;
 
-                        while (AABBs[(int)indices[right]].Centroid.X > splitPos)
+                        while (AABBs[(int)Indices[right]].Centroid.X > splitPos)
                             right--;
                         break;
                     case Axis.Y:
-                        while (AABBs[(int)indices[left]].Centroid.Y < splitPos)
+                        while (AABBs[(int)Indices[left]].Centroid.Y < splitPos)
                             left++;
 
-                        while (AABBs[(int)indices[right]].Centroid.Y > splitPos)
+                        while (AABBs[(int)Indices[right]].Centroid.Y > splitPos)
                             right--;
                         break;
                     case Axis.Z:
-                        while (AABBs[(int)indices[left]].Centroid.Z < splitPos)
+                        while (AABBs[(int)Indices[left]].Centroid.Z < splitPos)
                             left++;
 
-                        while (AABBs[(int)indices[right]].Centroid.Z > splitPos)
+                        while (AABBs[(int)Indices[right]].Centroid.Z > splitPos)
                             right--;
                         break;
                 }
 
                 if (left < right)
                 {
-                    var temp = indices[right];
-                    indices[right] = indices[left];
-                    indices[left] = temp;
+                    var temp = Indices[right];
+                    Indices[right] = Indices[left];
+                    Indices[left] = temp;
                 }
                 else
                 {
@@ -315,7 +315,8 @@ namespace Template
             }
         }
 
-        List<AABB> TrueArray => indices.Select(x => AABBs[(int)x]).ToList();
+        //for debugging
+        List<AABB> TrueArray => Indices.Select(x => AABBs[(int)x]).ToList();
 
         enum Axis
         {
