@@ -20,7 +20,7 @@ namespace Template
             Screen.Clear(0x2222ff);
             Renderer = new WhittedRenderer();
 #if true
-            Renderer.Scene = ObjLoader.LoadScene("C:\\Users\\Jasper\\Desktop\\dragon.obj");
+            Renderer.Scene = ObjLoader.LoadScene("C:\\Users\\Jasper\\Desktop\\teapot2.obj");
             Renderer.Scene.Bvh.ConstructBVH(Renderer.Scene.Triangles);
 #else
             Renderer.Scene = new Scene();

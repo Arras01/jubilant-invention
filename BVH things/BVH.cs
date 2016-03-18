@@ -10,7 +10,7 @@ namespace Template
     public class BVH
     {
         public BVHNode Root;
-        private BVHNode[] pool;
+        public BVHNode[] Pool;
         private int poolPtr;
         public uint[] Indices;
         private List<AABB> AABBs;
@@ -25,13 +25,13 @@ namespace Template
                 Indices[i] = i;
             }
 
-            pool = new BVHNode[2 * primitives.Count - 1];
-            for (var i = 0; i < pool.Length; i++)
+            Pool = new BVHNode[2 * primitives.Count - 1];
+            for (var i = 0; i < Pool.Length; i++)
             {
-                pool[i] = new BVHNode();
+                Pool[i] = new BVHNode();
             }
 
-            Root = pool[0];
+            Root = Pool[0];
             poolPtr = 2;
 
             Root.first = 0;
@@ -188,11 +188,11 @@ namespace Template
         {
             if (b.count < 3 || b.centroidBounds.Surface < float.Epsilon)
                 return;
-            b.left = pool[poolPtr++];
-            b.right = pool[poolPtr++];
+            b.left = poolPtr++;
+            poolPtr++;
             FindSplit(b);
-            Subdivide(b.left);
-            Subdivide(b.right);
+            Subdivide(b.leftNode(this));
+            Subdivide(b.rightNode(this));
             b.isLeaf = false;
         }
 
@@ -252,14 +252,14 @@ namespace Template
             }
 
             int split = Partition((best + 1) * binsize + k0, axis, b);
-            b.left.first = b.first;
-            b.left.count = split - b.first + 1;
-            b.right.first = split + 1;
-            b.right.count = b.count - b.left.count;
-            b.left.vertexBounds = CalculateVertexBounds(b.left.first, b.left.count);
-            b.left.centroidBounds = CalculateCentroidBounds(b.left.first, b.left.count);
-            b.right.vertexBounds = CalculateVertexBounds(b.right.first, b.right.count);
-            b.right.centroidBounds = CalculateCentroidBounds(b.right.first, b.right.count);
+            b.leftNode(this).first = b.first;
+            b.leftNode(this).count = split - b.first + 1;
+            b.rightNode(this).first = split + 1;
+            b.rightNode(this).count = b.count - b.leftNode(this).count;
+            b.leftNode(this).vertexBounds = CalculateVertexBounds(b.leftNode(this).first, b.leftNode(this).count);
+            b.leftNode(this).centroidBounds = CalculateCentroidBounds(b.leftNode(this).first, b.leftNode(this).count);
+            b.rightNode(this).vertexBounds = CalculateVertexBounds(b.rightNode(this).first, b.rightNode(this).count);
+            b.rightNode(this).centroidBounds = CalculateCentroidBounds(b.rightNode(this).first, b.rightNode(this).count);
         }
 
         int Partition(float splitPos, Axis axis, BVHNode b)

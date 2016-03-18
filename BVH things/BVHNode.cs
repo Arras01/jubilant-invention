@@ -8,7 +8,7 @@ namespace Template
         public AABB vertexBounds;
         public AABB centroidBounds;
         public bool isLeaf = true;
-        public BVHNode left, right;
+        public int left;
         public int first, count;
 
         public void Traverse(Ray r, List<Triangle> primitives, BVH bvh)
@@ -21,8 +21,8 @@ namespace Template
             }
             else
             {
-                left.Traverse(r, primitives, bvh);
-                right.Traverse(r, primitives, bvh);
+                leftNode(bvh).Traverse(r, primitives, bvh);
+                rightNode(bvh).Traverse(r, primitives, bvh);
             }
         }
 
@@ -36,8 +36,8 @@ namespace Template
             }
             else
             {
-                return left.CheckForAnyCollision(r, primitives, bvh) 
-                    || right.CheckForAnyCollision(r, primitives, bvh);
+                return leftNode(bvh).CheckForAnyCollision(r, primitives, bvh) 
+                    || rightNode(bvh).CheckForAnyCollision(r, primitives, bvh);
             }
         }
 
@@ -49,6 +49,16 @@ namespace Template
                 result = result || primitives[(int)bvh.Indices[i + first]].Intersect(r);
             }
             return result;
+        }
+
+        public BVHNode leftNode(BVH bvh)
+        {
+            return bvh.Pool[left];
+        }
+
+        public BVHNode rightNode(BVH bvh)
+        {
+            return bvh.Pool[left+1];
         }
     }
 }
