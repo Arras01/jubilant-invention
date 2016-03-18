@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using OpenTK;
 using Template.Objects;
 
@@ -46,12 +47,12 @@ namespace Template
         public void Tick()
         {
             //Screen.Print("hello world!", 2, 2, 0xffffff);
-            foreach (var tuple in Camera.GenerateRays(Screen.width, Screen.height))
+            Parallel.ForEach(Camera.GenerateRays(Screen.width, Screen.height), tuple =>
             {
                 var c = Renderer.Trace(tuple.Item3, 1);
                 Screen.Plot(tuple.Item1, tuple.Item2, HelperFunctions.VectorColorToInt(c));
 
-            }
+            });
             Console.WriteLine("frame");
         }
 
