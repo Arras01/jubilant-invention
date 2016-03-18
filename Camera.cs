@@ -25,8 +25,10 @@ namespace Template
             topLeft = center + new Vector3(-1, -1, 0);
             topRight = center + new Vector3(1, -1, 0);
             bottomLeft = center + new Vector3(-1, 1, 0);
+            MoveCamera(Matrix4.CreateRotationZ((float) Math.PI));
         }
 
+        //breaks everything
         public void MoveCamera(Matrix4 m)
         {
             Position = Vector3.TransformPosition(Position, m);

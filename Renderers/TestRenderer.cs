@@ -7,7 +7,8 @@ namespace Template
     {
         public override Vector3 Trace(Ray r, int depth)
         {
-            return Scene.BruteForceFindAnyIntersection(r) ? new Vector3(255, 255, 255) : new Vector3();
+            Scene.BvhFindNearestIntersection(r);
+            return r.NearestIntersection < float.MaxValue ? new Vector3(1, 1, 1) : new Vector3();
         }
     }
 }

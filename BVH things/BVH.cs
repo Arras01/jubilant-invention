@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using OpenTK;
 using Template.Objects;
@@ -170,12 +169,8 @@ namespace Template
         {
             var left = SumAABBs(binBoxes, 0, split + 1);
             var right = SumAABBs(binBoxes, split + 1, binBoxes.Length - (split + 1));
-            var leftArea = (left.Bounds[1].X - left.Bounds[0].X) * (left.Bounds[1].Y - left.Bounds[0].Y)
-                         + (left.Bounds[1].X - left.Bounds[0].X) * (left.Bounds[1].Z - left.Bounds[0].Z)
-                         + (left.Bounds[1].Y - left.Bounds[0].Y) * (left.Bounds[1].Z - left.Bounds[0].Z);
-            var rightArea = (right.Bounds[1].X - right.Bounds[0].X) * (right.Bounds[1].Y - right.Bounds[0].Y)
-                          + (right.Bounds[1].X - right.Bounds[0].X) * (right.Bounds[1].Z - right.Bounds[0].Z)
-                          + (right.Bounds[1].Y - right.Bounds[0].Y) * (right.Bounds[1].Z - right.Bounds[0].Z);
+            var leftArea = left.Surface;
+            var rightArea = right.Surface;
             int leftCount = 0, rightCount = 0;
             for (int j = 0; j < split + 1; j++)
             {
@@ -191,7 +186,7 @@ namespace Template
 
         private void Subdivide(BVHNode b)
         {
-            if (b.count < 3)
+            if (b.count < 3 || b.centroidBounds.Surface < float.Epsilon)
                 return;
             b.left = pool[poolPtr++];
             b.right = pool[poolPtr++];
@@ -203,7 +198,7 @@ namespace Template
 
         void FindSplit(BVHNode b)
         {
-            int bins = 8;
+            int bins = 12;
 
             var cbounds = b.centroidBounds;
 
@@ -246,9 +241,6 @@ namespace Template
             int best = 0;
             float bestHeuristic = float.MaxValue;
 
-            if (b.count == 11)
-                Debugger.Break();
-
             for (int i = 0; i < bins - 1; i++)
             {
                 var SAH = CalculateSAH(binBoxes, binTriangleCounts, i);
@@ -262,7 +254,7 @@ namespace Template
             int split = Partition((best + 1) * binsize + k0, axis, b);
             b.left.first = b.first;
             b.left.count = split - b.first + 1;
-            b.right.first = split;
+            b.right.first = split + 1;
             b.right.count = b.count - b.left.count;
             b.left.vertexBounds = CalculateVertexBounds(b.left.first, b.left.count);
             b.left.centroidBounds = CalculateCentroidBounds(b.left.first, b.left.count);
@@ -283,21 +275,21 @@ namespace Template
                         while (AABBs[(int)Indices[left]].Centroid.X < splitPos)
                             left++;
 
-                        while (AABBs[(int)Indices[right]].Centroid.X > splitPos)
+                        while (AABBs[(int)Indices[right]].Centroid.X >= splitPos)
                             right--;
                         break;
                     case Axis.Y:
                         while (AABBs[(int)Indices[left]].Centroid.Y < splitPos)
                             left++;
 
-                        while (AABBs[(int)Indices[right]].Centroid.Y > splitPos)
+                        while (AABBs[(int)Indices[right]].Centroid.Y >= splitPos)
                             right--;
                         break;
                     case Axis.Z:
                         while (AABBs[(int)Indices[left]].Centroid.Z < splitPos)
                             left++;
 
-                        while (AABBs[(int)Indices[right]].Centroid.Z > splitPos)
+                        while (AABBs[(int)Indices[right]].Centroid.Z >= splitPos)
                             right--;
                         break;
                 }

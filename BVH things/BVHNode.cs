@@ -26,12 +26,29 @@ namespace Template
             }
         }
 
-        public void IntersectPrimitives(Ray r, List<Triangle> primitives, BVH bvh)
+        public bool CheckForAnyCollision(Ray r, List<Triangle> primitives, BVH bvh)
         {
+            if (!vertexBounds.Intersect(r))
+                return false;
+            if (isLeaf)
+            {
+                return IntersectPrimitives(r, primitives, bvh);
+            }
+            else
+            {
+                return left.CheckForAnyCollision(r, primitives, bvh) 
+                    || right.CheckForAnyCollision(r, primitives, bvh);
+            }
+        }
+
+        public bool IntersectPrimitives(Ray r, List<Triangle> primitives, BVH bvh)
+        {
+            bool result = false;
             for (int i = 0; i < count; i++)
             {
-                primitives[(int)bvh.Indices[i + first]].Intersect(r);
+                result = result || primitives[(int)bvh.Indices[i + first]].Intersect(r);
             }
+            return result;
         }
     }
 }

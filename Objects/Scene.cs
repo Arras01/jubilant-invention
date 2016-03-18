@@ -29,6 +29,17 @@ namespace Template.Objects
             return Objects.Any(sceneObject => sceneObject.Intersect(r));
         }
 
+        public bool BvhCheckFreePath(Vector3 a, Vector3 b)
+        {
+            const float epsilon = 0.0001f;
+            float distance = (b - a).Length;
+            Vector3 direction = (b - a).Normalized();
+            Ray lightRay = new Ray(a + direction * epsilon, direction);
+            lightRay.NearestIntersection = distance - 2*epsilon;
+            Bvh.Root.CheckForAnyCollision(lightRay, Triangles, Bvh);
+            return true;
+        }
+
         public bool BruteForceCheckFreePath(Vector3 a, Vector3 b)
         {
             const float epsilon = 0.0001f;

@@ -18,7 +18,7 @@ namespace Template
             Screen.Clear(0x2222ff);
             Renderer = new WhittedRenderer();
 #if true
-            Renderer.Scene = ObjLoader.LoadScene("C:\\Users\\Jasper\\Desktop\\sphere.obj");
+            Renderer.Scene = ObjLoader.LoadScene("C:\\Users\\Jasper\\Desktop\\dragon.obj");
             Renderer.Scene.Bvh.ConstructBVH(Renderer.Scene.Triangles);
 #else
             Renderer.Scene = new Scene();
@@ -35,8 +35,8 @@ namespace Template
 #endif
             Renderer.Scene.PointLights = new List<PointLight>
             {
-                new PointLight(new Vector3(0, -5, 0), 250f),
-                new PointLight(new Vector3(0, -5, -20), 250f)
+                new PointLight(new Vector3(0, 0, 0), 25000f),
+                //new PointLight(new Vector3(0, -5, -20), 250f)
             };
             Camera = new Camera();
         }

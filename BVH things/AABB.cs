@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using OpenTK;
 using Template.Objects;
 
@@ -61,5 +62,9 @@ namespace Template
 
             return true;
         }
+
+        public float Surface => (Bounds[1].X - Bounds[0].X) * (Bounds[1].Y - Bounds[0].Y)
+                              + (Bounds[1].X - Bounds[0].X) * (Bounds[1].Z - Bounds[0].Z)
+                              + (Bounds[1].Y - Bounds[0].Y) * (Bounds[1].Z - Bounds[0].Z);
     }
 }

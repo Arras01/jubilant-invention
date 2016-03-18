@@ -101,7 +101,7 @@ namespace Template
             float result = 0;
             foreach (var pointLight in Scene.PointLights)
             {
-                if (Scene.BruteForceCheckFreePath(intersection, pointLight.Location))
+                if (Scene.BvhCheckFreePath(intersection, pointLight.Location))
                 {
                     var angle = Vector3.Dot(normal, (pointLight.Location - intersection).Normalized());
                     if (angle < 0)
