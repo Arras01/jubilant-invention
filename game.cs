@@ -12,6 +12,7 @@ namespace Template
         public Surface Screen;
         public Renderer Renderer;
         public Camera Camera;
+        Stopwatch timer;
 
         public void Init()
         {
@@ -40,6 +41,7 @@ namespace Template
                 //new PointLight(new Vector3(0, -5, -20), 250f)
             };
             Camera = new Camera();
+            timer = Stopwatch.StartNew();
         }
         /// <summary>
         /// Called once per frame at the start of rendering
@@ -54,6 +56,9 @@ namespace Template
 
             });
             Console.WriteLine("frame");
+            var fps = 1000 / timer.ElapsedMilliseconds;
+            Screen.Print("FPS: " + fps, 0, 0, 0xFFFFFF);
+            timer.Restart();
         }
 
         /// <summary>
