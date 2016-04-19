@@ -17,7 +17,15 @@ namespace Template.Objects
             Material = material;
         }
 
-        public override bool Intersect(Ray r)
+        public override AABB GetAABB()
+        {
+            var p1 = Position - new Vector3(Radius, Radius, Radius);
+            var p2 = Position + new Vector3(Radius, Radius, Radius);
+            var result = new AABB(p1, p2) {Centroid = Position};
+            return result;
+        }
+
+        /*public override bool Intersect(Ray r)
         {
             //only use faster algorithm if ray starts outside the sphere since it doesn't work correctly otherwise
             if ((r.Origin - Position).Length < Radius)
@@ -37,9 +45,9 @@ namespace Template.Objects
                 return true;
             }
             return false;
-        }
+        }*/
 
-        private bool SlowIntersect(Ray r)
+        public override bool Intersect(Ray r)
         {
             var a = Vector3.Dot(r.Direction, r.Direction);
             var b = 2 * Vector3.Dot(r.Direction, r.Origin - Position);

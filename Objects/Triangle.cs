@@ -24,6 +24,19 @@ namespace Template.Objects
             d = Vector3.Dot(normal, V1);
         }
 
+        public override AABB GetAABB()
+        {
+            var p1 = new Vector3(Math.Min(Math.Min(V1.X, V2.X), V3.X)
+                        , Math.Min(Math.Min(V1.Y, V2.Y), V3.Y)
+                        , Math.Min(Math.Min(V1.Z, V2.Z), V3.Z));
+            var p2 = new Vector3(Math.Max(Math.Max(V1.X, V2.X), V3.X)
+                        , Math.Max(Math.Max(V1.Y, V2.Y), V3.Y)
+                        , Math.Max(Math.Max(V1.Z, V2.Z), V3.Z));
+            var result = new AABB(p1, p2);
+            result.RecalculateCentroid();
+            return result;
+        }
+
         public override bool Intersect(Ray r)
         {
             // Step 1: finding P

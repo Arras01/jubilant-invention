@@ -33,7 +33,7 @@ namespace Template
         }
 
 
-        public bool Intersect(Ray r)
+        public float Intersect(Ray r)
         {
             float tmin, tmax, tymin, tymax, tzmin, tzmax;
 
@@ -43,7 +43,7 @@ namespace Template
             tymax = (Bounds[1 - r.Sign[1]].Y - r.Origin.Y) * r.InvDirection.Y;
 
             if ((tmin > tymax) || (tymin > tmax))
-                return false;
+                return -1;
             if (tymin > tmin)
                 tmin = tymin;
             if (tymax < tmax)
@@ -53,13 +53,13 @@ namespace Template
             tzmax = (Bounds[1 - r.Sign[2]].Z - r.Origin.Z) * r.InvDirection.Z;
 
             if ((tmin > tzmax) || (tzmin > tmax))
-                return false;
-            /*if (tzmin > tmin)
+                return -1;
+            if (tzmin > tmin)
                 tmin = tzmin;
             if (tzmax < tmax)
-                tmax = tzmax;*/
+                tmax = tzmax;
 
-            return true;
+            return tmin;
         }
 
         public float Surface => (Bounds[1].X - Bounds[0].X) * (Bounds[1].Y - Bounds[0].Y)

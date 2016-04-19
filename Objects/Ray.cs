@@ -22,5 +22,7 @@ namespace Template.Objects
             Sign[1] = InvDirection.Y < 0 ? 1 : 0;
             Sign[2] = InvDirection.Z < 0 ? 1 : 0;
         }
+
+        public Vector3 IntersectionPoint => Origin + Direction*NearestIntersection;
     }
 }

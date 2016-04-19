@@ -15,7 +15,7 @@ namespace Template
         public uint[] Indices;
         private List<AABB> AABBs;
 
-        public void ConstructBVH(List<Triangle> primitives)
+        public void ConstructBVH(List<RenderableObject> primitives)
         {
             AABBs = GetBoundingBoxes(primitives);
 
@@ -41,9 +41,9 @@ namespace Template
             Subdivide(Root);
         }
 
-        List<AABB> GetBoundingBoxes(List<Triangle> primitives)
+        List<AABB> GetBoundingBoxes(List<RenderableObject> primitives)
         {
-            return primitives.Select(t => new AABB(t)).ToList();
+            return primitives.Select(t => t.GetAABB()).ToList();
         }
 
         //There is probably a better way than having 4 bounding box functions that all more or less do the same thing,

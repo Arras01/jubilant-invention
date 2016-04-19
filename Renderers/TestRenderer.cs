@@ -5,10 +5,10 @@ namespace Template
 {
     class TestRenderer : Renderer
     {
-        public override Vector3 Trace(Ray r, int depth)
+        public override Vector3 Trace(Ray ray, int depth)
         {
-            Scene.BvhFindNearestIntersection(r);
-            return r.NearestIntersection < float.MaxValue ? new Vector3(1, 1, 1) : new Vector3();
+            Scene.FindNearestIntersection(ray);
+            return ray.NearestIntersection < float.MaxValue ? new Vector3(1, 1, 1) : new Vector3();
         }
     }
 }

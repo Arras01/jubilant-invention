@@ -6,10 +6,24 @@ namespace Template.Objects
 {
     public class Scene
     {
-        public IEnumerable<RenderableObject> Objects = new List<RenderableObject>();
-        public List<Triangle> Triangles = new List<Triangle>(); 
-        public IEnumerable<PointLight> PointLights = new List<PointLight>();
+        public List<RenderableObject> Objects = new List<RenderableObject>();
+        public List<PointLight> PointLights = new List<PointLight>();
         public BVH Bvh = new BVH();
+
+        public void FindNearestIntersection(Ray r)
+        {
+            BruteForceFindNearestIntersection(r);
+        }
+
+        public void FindAnyIntersection(Ray r)
+        {
+            BruteForceFindAnyIntersection(r);
+        }
+
+        public bool CheckFreePath(Vector3 a, Vector3 b)
+        {
+            return BruteForceCheckFreePath(a, b);
+        }
 
         public void BruteForceFindNearestIntersection(Ray r)
         {
@@ -21,7 +35,7 @@ namespace Template.Objects
 
         public void BvhFindNearestIntersection(Ray r)
         {
-            Bvh.Root.Traverse(r, Triangles, Bvh);
+            Bvh.Root.Traverse(r, Objects, Bvh);
         }
 
         public bool BruteForceFindAnyIntersection(Ray r)
@@ -36,7 +50,7 @@ namespace Template.Objects
             Vector3 direction = (b - a).Normalized();
             Ray lightRay = new Ray(a + direction * epsilon, direction);
             lightRay.NearestIntersection = distance - 2*epsilon;
-            Bvh.Root.CheckForAnyCollision(lightRay, Triangles, Bvh);
+            Bvh.Root.CheckForAnyCollision(lightRay, Objects, Bvh);
             return true;
         }
 

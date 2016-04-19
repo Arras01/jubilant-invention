@@ -4,5 +4,6 @@
     {
         public abstract bool Intersect(Ray r);
         public Material Material;
+        public abstract AABB GetAABB();
     }
 }

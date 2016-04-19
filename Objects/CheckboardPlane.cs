@@ -9,7 +9,7 @@ namespace Template.Objects
         public override bool Intersect(Ray r)
         {
             float denom = Vector3.Dot(r.Direction, Normal);
-            if (denom < 0.0001f) return false;
+            if (denom > 0.0001f) return false;
 
             Vector3 placeDifference = Point - r.Origin;
 

@@ -16,8 +16,7 @@ namespace Template
             Scene s = new Scene();
             var result = FileFormatObj.Load(objName, false);
             var allFaces = result.Model.Groups.SelectMany(g => g.Faces).Concat(result.Model.UngroupedFaces);
-            s.Triangles = new List<Triangle>(allFaces.Select(f => ConvertFaceToTriangle(f, result.Model.Vertices)));
-            //s.Objects = new List<RenderableObject>(s.Triangles);
+            s.Objects = new List<RenderableObject>(allFaces.Select(f => ConvertFaceToTriangle(f, result.Model.Vertices)));
             return s;
         }
 
