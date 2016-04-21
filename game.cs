@@ -37,7 +37,7 @@ namespace Template
                 //new Sphere(new Vector3(2, 2, -14), 2, Material.TestLightMaterial),
                 //new Sphere(new Vector3(110, 2, -14), 100, Material.TestLightMaterial),
                 //new Sphere(new Vector3(3, -3, -13), 2f, Material.TestSpecularMaterial),
-                new Sphere(new Vector3(0, -3, -10), 2, Material.TestDiffuseMaterial),
+                new Sphere(new Vector3(0, -3, -10), 2, Material.TestRefractiveMaterial),
                 //new Sphere(new Vector3(0, 0, -1000), 800, Material.TestDiffuseMaterial),
                 new CheckboardPlane(-5, new Vector3(0, 1, 0), Material.TestDiffuseMaterial),
                 l1,

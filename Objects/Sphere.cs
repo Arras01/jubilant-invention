@@ -25,7 +25,7 @@ namespace Template.Objects
             return result;
         }
 
-        /*public override bool Intersect(Ray r)
+        public override bool Intersect(Ray r)
         {
             //only use faster algorithm if ray starts outside the sphere since it doesn't work correctly otherwise
             if ((r.Origin - Position).Length < Radius)
@@ -45,9 +45,9 @@ namespace Template.Objects
                 return true;
             }
             return false;
-        }*/
+        }
 
-        public override bool Intersect(Ray r)
+        public bool SlowIntersect(Ray r)
         {
             var a = Vector3.Dot(r.Direction, r.Direction);
             var b = 2 * Vector3.Dot(r.Direction, r.Origin - Position);
