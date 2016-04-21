@@ -8,6 +8,7 @@ namespace Template.Objects
     {
         public List<RenderableObject> Objects = new List<RenderableObject>();
         public List<PointLight> PointLights = new List<PointLight>();
+        public List<Triangle> TriangleLights = new List<Triangle>();
         public BVH Bvh = new BVH();
 
         public void FindNearestIntersection(Ray r)

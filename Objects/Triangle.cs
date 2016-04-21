@@ -9,7 +9,7 @@ namespace Template.Objects
         public readonly Vector3 V2;
         public readonly Vector3 V3;
         private readonly float d;
-        readonly Vector3 normal;
+        public readonly Vector3 normal;
 
         public Triangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
@@ -20,8 +20,14 @@ namespace Template.Objects
             Vector3 v0v2 = v3 - v1;
             // no need to normalize
             normal = Vector3.Cross(v0v1, v0v2);
-            //normal = Vector3.Cross(v2 - v1, v3 - v1).Normalized();
+            normal.Normalize();
             d = Vector3.Dot(normal, V1);
+        }
+
+        public Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material m)
+            : this(v1, v2, v3)
+        {
+            Material = m;
         }
 
         public override AABB GetAABB()
@@ -37,7 +43,8 @@ namespace Template.Objects
             return result;
         }
 
-        public override bool Intersect(Ray r)
+        //This code usually works, but sometimes returns the wrong t????
+        /*public override bool Intersect(Ray r)
         {
             // Step 1: finding P
 
@@ -83,9 +90,10 @@ namespace Template.Objects
             }
 
             return true; // this ray hits the triangle 
-        }
+        }*/
 
-        /*public override bool Intersect(Ray r)
+        //this one seems to work better
+        public override bool Intersect(Ray r)
         {
             //Find vectors for two edges sharing V1
             var e1 = V2 - V1;
@@ -130,6 +138,6 @@ namespace Template.Objects
                 r.IntersectionNormal = normal;
             }
             return true;
-        }*/
+        }
     }
 }

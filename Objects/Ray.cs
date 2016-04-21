@@ -15,7 +15,7 @@ namespace Template.Objects
 
         public Ray(Vector3 origin, Vector3 direction)
         {
-            Origin = origin;
+            Origin = origin + direction * 0.0001f;
             Direction = direction;
             InvDirection = new Vector3(1 / direction.X, 1 / direction.Y, 1 / direction.Z);
             Sign[0] = InvDirection.X < 0 ? 1 : 0;

@@ -14,6 +14,7 @@ namespace Template
         protected override void OnLoad(EventArgs e)
         {
             MouseDown += ClickPixel;
+            KeyDown += PressKey;
 
             // called upon app init
             GL.ClearColor(Color.Black);
@@ -87,6 +88,11 @@ namespace Template
         private void ClickPixel(object sender, MouseButtonEventArgs e)
         {
             game.CheckPixel(e.X, e.Y);
+        }
+
+        private void PressKey(object sender, KeyboardKeyEventArgs e)
+        {
+            game.HandleKeyPress(e.Keyboard);
         }
     }
 }
