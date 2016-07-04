@@ -16,7 +16,7 @@ namespace Template
 
         public Vector3 Sample(Ray ray, bool lastSpecular, int depth)
         {
-            Scene.BruteForceFindNearestIntersection(ray);
+            Scene.FindNearestIntersection(ray);
 
             //prevent stack overflows
             if (depth > 100)

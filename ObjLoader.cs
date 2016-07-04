@@ -20,6 +20,13 @@ namespace Template
             return s;
         }
 
+        public static void LoadObject(string objName, Scene scene)
+        {
+            var result = FileFormatObj.Load(objName, false);
+            var allFaces = result.Model.Groups.SelectMany(g => g.Faces).Concat(result.Model.UngroupedFaces);
+            scene.Objects.AddRange(allFaces.Select(f => ConvertFaceToTriangle(f, result.Model.Vertices)));
+        }
+
         private static Triangle ConvertFaceToTriangle(Face f, IReadOnlyList<Vertex> vertices)
         {
             return new Triangle(ConvertVertexToVector3(vertices[f.Indices[0].vertex]),

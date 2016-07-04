@@ -17,10 +17,16 @@ namespace Template.Objects
             Color = new Vector3(1.0f, 0.3f, 0.3f)
         };
 
+        public static Material TestGreyMaterial => new Material
+        {
+            Color = new Vector3(0.3f, 0.3f, 0.3f),
+            Specularity = 0.3f
+        };
+
         public static Material TestSpecularMaterial => new Material
         {
-            Color = new Vector3(0, 0, 0.8f),
-            Specularity = 0.9f
+            Color = Vector3.One,
+            Specularity = 0.5f
         };
 
         public static Material TestRefractiveMaterial => new Material
@@ -32,7 +38,7 @@ namespace Template.Objects
 
         public static Material TestLightMaterial => new Material
         {
-            Light = 100f,
+            Light = 10f,
             Color = Vector3.One
         };
 

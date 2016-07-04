@@ -15,12 +15,7 @@ namespace Template.Objects
         {
             BruteForceFindNearestIntersection(r);
         }
-
-        public void FindAnyIntersection(Ray r)
-        {
-            BruteForceFindAnyIntersection(r);
-        }
-
+        
         public bool CheckFreePath(Vector3 a, Vector3 b)
         {
             return BruteForceCheckFreePath(a, b);
@@ -37,11 +32,6 @@ namespace Template.Objects
         public void BvhFindNearestIntersection(Ray r)
         {
             Bvh.Root.Traverse(r, Objects, Bvh);
-        }
-
-        public bool BruteForceFindAnyIntersection(Ray r)
-        {
-            return Objects.Any(sceneObject => sceneObject.Intersect(r));
         }
 
         public bool BvhCheckFreePath(Vector3 a, Vector3 b)

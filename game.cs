@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using OpenTK;
 using OpenTK.Input;
 using Template.Objects;
@@ -19,17 +20,18 @@ namespace Template
         {
 
             Screen.Clear(0x2222ff);
-            screenBuffer = new Vector3[Screen.width,Screen.height];
+            screenBuffer = new Vector3[Screen.width, Screen.height];
             Renderer = new PathRenderer();
-#if false
-            Renderer.Scene = ObjLoader.LoadScene("../../../Models/bunny.obj");
-#else    //do not use, will break because bvh has no spheres and planes
+
             Renderer.Scene = new Scene();
+            //ObjLoader.LoadObject("../../../Models/teapot3.obj", Renderer.Scene);
+
             var l1 = new Triangle(new Vector3(-4, 7, -10), new Vector3(4, 7, -10), new Vector3(4, 7, -5),
                 Material.TestLightMaterial);
             var l2 = new Triangle(new Vector3(-4, 7, -5), new Vector3(-4, 7, -10), new Vector3(4, 7, -5),
                 Material.TestLightMaterial);
-            Renderer.Scene.Objects = new List<RenderableObject>()
+
+            Renderer.Scene.Objects.AddRange(new List<RenderableObject>()
             {
                 //new Sphere(new Vector3(0, 0, -10), 5, Material.TestRefractiveMaterial),
                 new Sphere(new Vector3(-5, 3, -20), 2, Material.TestDiffuseMaterial),
@@ -37,7 +39,10 @@ namespace Template
                 //new Sphere(new Vector3(2, 2, -14), 2, Material.TestLightMaterial),
                 //new Sphere(new Vector3(110, 2, -14), 100, Material.TestLightMaterial),
                 //new Sphere(new Vector3(3, -3, -13), 2f, Material.TestSpecularMaterial),
-                new Sphere(new Vector3(0, -3, -10), 2, Material.TestRefractiveMaterial),
+                new Sphere(new Vector3(0, 0, -5), 1, Material.TestWhiteMaterial),
+               //new Triangle(new Vector3(14, -5, -100), new Vector3(-14, -5, -100), new Vector3(14, -5, -1), Material.TestBlackMaterial),
+               //new Triangle(new Vector3(-14, -5, -100), new Vector3(-14, -5, -1), new Vector3(14, -5, -1), Material.TestSpecularMaterial),
+               //new Sphere(new Vector3(0, -210, -10), 200, Material.TestWhiteMaterial),
                 //new Sphere(new Vector3(0, 0, -1000), 800, Material.TestDiffuseMaterial),
                 new CheckboardPlane(-5, new Vector3(0, 1, 0), Material.TestDiffuseMaterial),
                 l1,
@@ -45,7 +50,7 @@ namespace Template
                 //new Triangle(new Vector3(-15, -15, -20), new Vector3(15, -15, -20), new Vector3(-15, 15, -20), Material.TestDiffuseMaterial),
                 //new Triangle(new Vector3(15, 15, -20), new Vector3(15, -15, 0), new Vector3(15, -15, -20), Material.TestDiffuseMaterial),
                 //new Sphere(new Vector3(0,0,0), 50, Material.TestWhiteMaterial)
-            };
+            });
 
             Renderer.Scene.TriangleLights = new List<Triangle>
             {
@@ -53,18 +58,13 @@ namespace Template
                 l2
             };
 
-            Renderer.Scene.PointLights = new List<PointLight>
+            /*Renderer.Scene.PointLights = new List<PointLight>
             {
                 new PointLight(new Vector3(0, 0, 0), 25000f),
                 //new PointLight(new Vector3(0, -5, -20), 250f)
-            };
-#endif
+            };*/
+
             //Renderer.Scene.Bvh.ConstructBVH(Renderer.Scene.Objects.ToList());
-            Renderer.Scene.PointLights = new List<PointLight>
-            {
-                new PointLight(new Vector3(0, 0, 0), 25000f),
-                //new PointLight(new Vector3(0, -5, -20), 250f)
-            };
             Camera = new Camera();
             timer = Stopwatch.StartNew();
         }
@@ -74,7 +74,7 @@ namespace Template
         public void Tick()
         {
             //Screen.Print("hello world!", 2, 2, 0xffffff);
-            foreach (var tuple in Camera.GenerateRays(Screen.width,Screen.height))
+            foreach (var tuple in Camera.GenerateRays(Screen.width, Screen.height))
             {
                 var c = Renderer.Trace(tuple.Item3, 1);
                 screenBuffer[tuple.Item1, tuple.Item2] += c;
