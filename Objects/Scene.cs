@@ -7,6 +7,7 @@ namespace Template.Objects
     public class Scene
     {
         public List<RenderableObject> Objects = new List<RenderableObject>();
+        public List<Sphere> SphereLights = new List<Sphere>();
         public List<PointLight> PointLights = new List<PointLight>();
         public BVH Bvh = new BVH();
 

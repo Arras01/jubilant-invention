@@ -9,6 +9,11 @@ namespace Template
     {
         public override Vector3 Trace(Ray ray, int depth)
         {
+            return Sample(ray, depth, true);
+        }
+
+        public Vector3 Sample(Ray ray, int depth, bool lastSpecular)
+        {
             /*if (depth > 10)
             {
                 return Vector3.Zero;
@@ -17,10 +22,15 @@ namespace Template
             Scene.BruteForceFindNearestIntersection(ray);
 
             if (Math.Abs(ray.NearestIntersection - float.MaxValue) < float.Epsilon)
-                return new Vector3(0);
+                return Vector3.Zero;
 
             if (ray.IntersectedMaterial.IsLight)
-                return ray.IntersectedMaterial.Light * ray.IntersectedMaterial.Color;
+            {
+                if (lastSpecular)
+                    return ray.IntersectedMaterial.Light * ray.IntersectedMaterial.Color;
+                else
+                    return Vector3.Zero;
+            }
 
             var s = Random.NextDouble();
             /*if (ray.IntersectedMaterial.Specularity > s)
@@ -29,25 +39,51 @@ namespace Template
                 return ray.IntersectedMaterial.Color * Trace(rf, ++depth);
             }*/
 
+            Vector3 BRDF = ray.IntersectedMaterial.Color / (float)Math.PI;
+
+            //NEE stuff
+            Vector3 L;
+            Vector3 Nl;
+            float area;
+            Material m;
+            var lightPoint = GetRandomPointOnLightSource(ray.IntersectionPoint, out Nl, out L, out m, out area);
+            var Ld = Vector3.Zero;
+            if (Vector3.Dot(ray.IntersectionNormal, L) > 0 && Vector3.Dot(Nl, -L) > 0)
+                if (Scene.CheckFreePath(ray.IntersectionPoint, lightPoint))
+                {
+                    var solidAngle = Vector3.Dot(Nl, -L) * area / (lightPoint - ray.IntersectionPoint).LengthSquared;
+                    Ld = m.Color * m.Light * solidAngle * BRDF * Vector3.Dot(ray.IntersectionNormal, L);
+                }
+
             Vector3 R = WeightedDiffuseReflection(ray.IntersectionNormal);
             Ray r = new Ray(ray.IntersectionPoint, R);
-            Vector3 BRDF = ray.IntersectedMaterial.Color / (float)Math.PI;
+
             float PDF = (float)(Vector3.Dot(ray.IntersectionNormal, R) / Math.PI);
             //float PDF = (float) (1 / (2 * Math.PI));
 
             float surviveChance = 0.5f;
             if (Random.NextDouble() > surviveChance)
             {
-                return Vector3.Zero;
+                return Vector3.Zero + Ld;
             }
 
-            var t = Trace(r, ++depth);
+            var t = Sample(r, ++depth, false);
             var Ei = (t * Vector3.Dot(ray.IntersectionNormal, R) / PDF) / surviveChance;
 
-            //if (Math.Abs(Ei.X) > 0.0001f && Math.Abs(Ei.X - Math.PI * 2) > 0.0001f)
-            //    Debugger.Break();
+            return BRDF * Ei + Ld;
+        }
 
-            return BRDF * Ei;
+        private Vector3 GetRandomPointOnLightSource(Vector3 source, out Vector3 lightNormal, out Vector3 lightDirection, out Material lightMaterial, out float area)
+        {
+            var l = Scene.SphereLights[Random.Next(Scene.SphereLights.Count)];
+            var sphereDirection = (source - l.Position).Normalized();
+            var point = OldDiffuseReflection(sphereDirection);
+            lightNormal = point;
+            var result = l.Position + point * l.Radius;
+            lightDirection = (result - source).Normalized();
+            area = (float) (Math.PI * l.Radius2);
+            lightMaterial = l.Material;
+            return result;
         }
 
         private Ray ReflectRay(Ray r, Vector3 normal)

@@ -3,7 +3,7 @@ using OpenTK;
 
 namespace Template.Objects
 {
-    class Sphere : RenderableObject
+    public class Sphere : RenderableObject
     {
         public Vector3 Position;
         public float Radius;

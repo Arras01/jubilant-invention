@@ -44,6 +44,12 @@ namespace Template
                 new PointLight(new Vector3(0, 0, 0), 25000f),
                 //new PointLight(new Vector3(0, -5, -20), 250f)
             };
+            Renderer.Scene.SphereLights = new List<Sphere>
+            {
+                new Sphere(new Vector3(2, 2, -14), 2, Material.TestLightMaterial),
+                new Sphere(new Vector3(110, 2, -14), 100, Material.TestLightMaterial)
+            };
+
             Camera = new Camera();
             timer = Stopwatch.StartNew();
         }
