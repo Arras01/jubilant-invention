@@ -56,12 +56,6 @@ namespace Template
             foreach (var tuple in Camera.GenerateRays(Screen.width,Screen.height))
             {
                 var c = Renderer.Trace(tuple.Item3, 1);
-                if (c.X > 1)
-                    c.X = 1;
-                if (c.Y > 1)
-                    c.Y = 1;
-                if (c.Z > 1)
-                    c.Z = 1;
                 screenBuffer[tuple.Item1, tuple.Item2] += c;
             }
 

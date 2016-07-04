@@ -32,7 +32,7 @@ namespace Template.Objects
 
         public static Material TestLightMaterial => new Material
         {
-            Light = 100f,
+            Light = 1f,
             Color = Vector3.One
         };
 

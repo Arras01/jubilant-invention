@@ -13,6 +13,12 @@ namespace Template
 
         public static int VectorColorToInt(Vector3 c)
         {
+            if (c.X > 1)
+                c.X = 1;
+            if (c.Y > 1)
+                c.Y = 1;
+            if (c.Z > 1)
+                c.Z = 1;
             c *= 255;
             return (int)c.X * 0x10000 + (int)c.Y * 0x100 + (int)c.Z;
         }

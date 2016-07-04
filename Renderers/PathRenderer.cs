@@ -9,10 +9,10 @@ namespace Template
     {
         public override Vector3 Trace(Ray ray, int depth)
         {
-            if (depth > 10)
+            /*if (depth > 10)
             {
                 return Vector3.Zero;
-            }
+            }*/
 
             Scene.BruteForceFindNearestIntersection(ray);
 
@@ -23,11 +23,11 @@ namespace Template
                 return ray.IntersectedMaterial.Light * ray.IntersectedMaterial.Color;
 
             var s = Random.NextDouble();
-            if (ray.IntersectedMaterial.Specularity > s)
+            /*if (ray.IntersectedMaterial.Specularity > s)
             {
                 Ray rf = ReflectRay(ray, ray.IntersectionNormal);
                 return ray.IntersectedMaterial.Color * Trace(rf, ++depth);
-            }
+            }*/
 
             Vector3 R = WeightedDiffuseReflection(ray.IntersectionNormal);
             Ray r = new Ray(ray.IntersectionPoint, R);
@@ -35,7 +35,18 @@ namespace Template
             float PDF = (float)(Vector3.Dot(ray.IntersectionNormal, R) / Math.PI);
             //float PDF = (float) (1 / (2 * Math.PI));
 
-            var Ei = Trace(r, ++depth) * Vector3.Dot(ray.IntersectionNormal, R) / PDF;
+            float surviveChance = 0.5f;
+            if (Random.NextDouble() > surviveChance)
+            {
+                return Vector3.Zero;
+            }
+
+            var t = Trace(r, ++depth);
+            var Ei = (t * Vector3.Dot(ray.IntersectionNormal, R) / PDF) / surviveChance;
+
+            //if (Math.Abs(Ei.X) > 0.0001f && Math.Abs(Ei.X - Math.PI * 2) > 0.0001f)
+            //    Debugger.Break();
+
             return BRDF * Ei;
         }
 
